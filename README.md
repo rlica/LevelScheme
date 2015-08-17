@@ -1,3 +1,11 @@
+(R.Lica)
+Adding a simple tool to calculate the intensity balance for each level.
+Check /Intensity_Balance/
+
+
+
+Taken from S.V.Paulauskas
+
 Level Scheme Generator
 ======================
 This is a code that one can use to generate publication quality level schemes
