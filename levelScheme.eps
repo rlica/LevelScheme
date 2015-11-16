@@ -1,5 +1,5 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 0 0 1200 1100
+%%BoundingBox: 0 0 500 750
 %-----------------------------------------------------------
 %  Description: This code generates a level scheme for
 %  	radioactive nuclei. One can insert gammas, energies,
@@ -48,11 +48,11 @@
 %You should adjust these to match the size of your bounding box (or not whatever)
 /bbStX 0 cmConv div def 
 /bbStY 0 cmConv div def
-/bbEnX 1200 cmConv div def %Adjusts the width of the plot  - should be equal with %%BoundingBox
-/bbEnY 1100 cmConv div def %Adjusts the height of the plot - should be equal with %%BoundingBox
+/bbEnX  300 cmConv div def %Adjusts the width of the plot  - should be equal with %%BoundingBox
+/bbEnY  700 cmConv div def %Adjusts the height of the plot - should be equal with %%BoundingBox
 
 %Set the information for the fonts. 
-/fontsize 13.0 def 
+/fontsize 16.0 def 
 /fontsize2 1.5 def 
 /fontsize3 18.0 def
 /Efont /Times findfont fontsize scalefont def  % for energies
@@ -61,7 +61,7 @@
 /Ifont /Times-Italic findfont fontsize scalefont def  % for intensities
 /Ifont2 /Times findfont 8.0 scalefont def  % for log ft etc.
 
-/eFac 3 def          % Defines the energy contraction factor
+/eFac 2.6 def          % Defines the energy contraction factor
 /escale {eFac div} def  
 
 % x and y coordinates to start the drawing.
@@ -82,7 +82,7 @@ bbStX 4 cm add bbStY 2 cm add translate %The y coordinate should probably not be
 
 %---------- Transition Arrow Positioning ---------
 /ArrowX 70 def       % horiz. position of arrow; initial value
-/ArrowDist 13 def  % horiz. distance between arrows
+/ArrowDist 47 def  % horiz. distance between arrows
 
 
 /CoinPointSize 0.08 def  %Point Size For Coincidences
@@ -91,7 +91,7 @@ bbStX 4 cm add bbStY 2 cm add translate %The y coordinate should probably not be
 /headl 0.20 cm def         % length of arrowhead
 /ht 5. def                 % ht is thickness of arrowhead at its widest part/
 			   % thickness of tail.
-/intensity {0.19 mul} def  % intensity scales the width of the arrow.
+/intensity {0.22 mul} def  % intensity scales the width of the arrow.
 
 
 %-------------------------------------------------------------------------------
@@ -252,6 +252,7 @@ bbStX 4 cm add bbStY 2 cm add translate %The y coordinate should probably not be
 %********** level **********
 /level {
    newpath
+   /HalfLife exch def  %  [R.Lica]
    /LevColor exch def
    /isMother exch def
    0 gt { [12 6] 0 setdash 0.3 setlinewidth} if   % dashed line if dash gt 0
@@ -298,19 +299,26 @@ bbStX 4 cm add bbStY 2 cm add translate %The y coordinate should probably not be
    /feed exch def
    /ft exch def
    /spn exch def
+   
    %Set the Energy labels for the level
    Efont setfont Energy show
-
+      
+   %Set the HalfLife labels for the level [R. Lica]
+   HalfLife 0 eq {} {
+   LevelStart LevelLength add Elevel 4.0 add moveto HalfLife
+   Ifont setfont HalfLife getnum show
+   } ifelse 
+    
    %Set the spin for the energy level
-   LevelStart dx3 dx4 add sub Elevel 2.0 add moveto spn
+   LevelStart dx3 dx4 add sub Elevel 4.0 add moveto spn
    Ifont setfont spn getnum upshw
 
    %Set the log(ft)
-   LevelStart -2.5 cm add Elevel 2.0 add moveto ft
+   LevelStart -2.5 cm add Elevel 4.0 add moveto ft
    Ifont setfont ft getnum upshw
 
    %Set the feeding
-   LevelStart -4. cm add Elevel 2.0 add moveto feed
+   LevelStart -4. cm add Elevel 4.0 add moveto feed
    Ifont setfont feed getnum upshw
 
    0.5 setlinewidth
@@ -380,16 +388,16 @@ bbStX 4 cm add bbStY 2 cm add translate %The y coordinate should probably not be
 %-------------------------------------------------------------------------------
 %%---------- Mother Label ---------
 /momLvlPos bbEnY 0.9 cm mul eFac mul def
-/momXPos -1.0 cm MamaX add def
+/momXPos -1.1 cm MamaX add def
 /momYPos momLvlPos escale 1.15 cm sub def
-momXPos momYPos 30 /Times-Bold [(Cs) (148) (55) (93) ()] supsub
+momXPos momYPos 30 /Times-Bold [(In) (129) (49) (80) ()] supsub
 
 %---------- Mother Spin/Parity ----------
-momXPos -0.8 cm add momYPos 1.3 cm add 18 /Symbol [() ( ) ( ) ( ) ()] supsub
+momXPos -1.5 cm add momYPos 1.3 cm add 18 /Symbol [((1/2-)         459) () ( ) ( ) ()] supsub
 /Times findfont 18 scalefont setfont
 
 %---------- Decay Type Label ----------
-1.0 cm momYPos 20 /Symbol [(b) () () () (-)] supsub
+0.4 cm momYPos 20 /Symbol [(b) () () () (-)] supsub
 
 %---------- Decay Arrow ----------
 /arLn 2 cm def
@@ -397,12 +405,12 @@ momXPos -0.8 cm add momYPos 1.3 cm add 18 /Symbol [() ( ) ( ) ( ) ()] supsub
 /arEnY arStY arLn sub def
 /arStX momXPos 1.5 cm add def
 /arEnX 1.0 cm def
-arStX arStY arEnX arEnY 1.4 7 7 [0 0 0] arrow fill
+arStX arStY arEnX arEnY 1.1 7 7 [0 0 0] arrow fill
 
 %---------- Daughter Label ------------
-/dauXPos 0.5 LevelLength mul def
+/dauXPos 0.4 LevelLength mul def
 /dauYPos -1.5 cm def
-dauXPos dauYPos 30 /Times-Bold [(Ba) (148) (56) (92) ()] supsub
+dauXPos dauYPos 30 /Times-Bold [(Sn) (129) (50) (79) ()] supsub
 
 %---------- Energy Label ----------
 -2 cm LevelLength add dauYPos 0.25 cm add moveto (E [keV]) show
@@ -410,14 +418,14 @@ dauXPos dauYPos 30 /Times-Bold [(Ba) (148) (56) (92) ()] supsub
 
 %---------- Q-value  ----------
 /Times findfont 20 scalefont setfont
-4 cm momYPos moveto (Q  = 10.3(6) MeV) show
+4 cm momYPos moveto (Q  = 7.769(17) MeV ) show
 /Symbol findfont 14 scalefont setfont 
 4 cm momYPos moveto 14 5 neg rmoveto (b) show
 
 
 %---------- Half-Life ----------
 /Times findfont 20 scalefont setfont
-4 cm momYPos 1 cm add moveto (T    = 152.0(4) ms) show
+4 cm momYPos 1 cm add moveto (T    = 1.23 s) show
 /Times findfont 14 scalefont setfont
 4 cm momYPos 1 cm add moveto 10 3 neg rmoveto (1/2) show
 
@@ -428,11 +436,11 @@ dauXPos dauYPos 30 /Times-Bold [(Ba) (148) (56) (92) ()] supsub
 %4 cm momYPos 1 cm sub moveto 8 -4 rmoveto (n) show
 
 %---------- Intensity ----------
-%/Times findfont 18 scalefont setfont
-%-3.5 cm -1 cm moveto (I  %) show %Put the I_beta label
-%/Symbol findfont 13 scalefont setfont
-%-3.5 cm -1 cm moveto 5 -3 rmoveto (b) show %Put the beta in the I_beta label
-%/Times findfont 18 scalefont setfont
+/Times findfont 18 scalefont setfont
+-3.5 cm -1 cm moveto (I  %) show %Put the I_beta label
+/Symbol findfont 13 scalefont setfont
+-3.5 cm -1 cm moveto 5 -3 rmoveto (b) show %Put the beta in the I_beta label
+/Times findfont 18 scalefont setfont
 
 %---------- log(ft) ----------
 %-2.1 cm -1 cm moveto (log) show %Put the log for log(ft)
@@ -468,12 +476,17 @@ pop pop pop
 %-------------------------------------------------------------------------------
 % LEVELS:
 %-------------------------------------------------------------------------------
-%Spin  log(ft) feeding  Energy(label) Energy(pos) SizeOfKick isDashed isMother
-(0+)	() ()	  (   0.0)      0.0    0 0 0 1 level
-(2+)	() ()	  ( 141.6)    141.6    0 0 0 1 level
-(4+)	() ()	  ( 423.0)    423.0    0 0 0 1 level
-(1-)	() ()	  ( 687.0)    687.0    0 0 0 1 level
-((3-))	() ()	  ( 774.7)    774.7    0 0 0 1 level
+%Spin  log(ft) feeding  Energy(label) Energy(pos) SizeOfKick isDashed isMother Color Halflife
+(   3/2+)	() ()	   (      0.0)	   0.0    0 		0 	0 	0     ()       level
+( (1/2)+)  	() ()	   (    315.4)   315.4    0 		0 	0 	0     (35(14) ns)   level
+( (5/2+))  	() ()	   (    769.3)	 769.3    0 		0 	0 	0     ()       level
+( (3/2+))  	() ()	   (   1222.6)	1222.6    0 		0 	0 	0     ()       level
+( (3/2+))  	() ()	   (   1288.7)  1288.7    0 		0 	0 	0     ()       level
+
+
+
+
+
 
 
 
@@ -484,7 +497,7 @@ pop pop pop
 %-------------------------------------------------------------------------------
 2 setlinewidth  % for ground state only
 /LevelStart 0 def
-() () () () momLvlPos 0 0 1 0 level
+() () () () momLvlPos 0 0 1 0 0 level
 
 %-------------------------------------------------------------------------------
 % TRANSITIONS:
@@ -504,232 +517,15 @@ pop pop pop
 LevelLength 0 translate
 90 rotate               %% Now arrows and labels are plotted properly
 %-----------------------------------------------------
-(  100.0) (  141.6)  141.6  0.0        100	[0 1 (up)]	 trans
+(  100)	(   315.4)  315.4    0.0        100	 [0 0 (none)]	 trans
+(   30)	(   769.3)  769.3    0.0         30	 [0 0 (none)]	 trans
+(   30)	(   907.3) 1222.6  315.4         30	 [0 0 (none)]	 trans
+(   48)	(   973.5) 1288.7  315.4         48	 [0 0 (none)]	 trans
 
-(  22.0) (  281.3)  423.0  141.6      22.0     [0 1 (both)]	trans	
 
-(  24.9) (  545.5)  687.0  141.6      24.9     [0 1 (both)]	trans
-(  28.9) (  687.0)  687.0  0.0        28.9     [0 1 (both)]	trans
-
-(  6.2 ) (  351.7)  774.7  423.0      6.2      [0 1 (both)]	trans
-(  23.3) (  633.1)  774.7  141.6      23.3     [0 1 (both)]	trans
 
 %-----------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%%% NOTES
+%15.10.2015 - Added Corrections to the intensities by looking at coincidences
